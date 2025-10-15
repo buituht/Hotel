@@ -1,0 +1,9 @@
+flask
+flask_sqlalchemy
+flask_migrate
+flask_admin
+pymysql
+werkzeug
+flask-login
+flask-wtf
+email-validator
