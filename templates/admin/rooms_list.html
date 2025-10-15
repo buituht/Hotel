@@ -1,0 +1,39 @@
+{% extends "admin/layout.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>Danh sách phòng</h2>
+  <a class="btn btn-success" href="{{ url_for('admin_ui.phong_create') }}">Tạo phòng mới</a>
+</div>
+
+<table class="table table-striped table-bordered">
+  <thead class="thead-light">
+    <tr>
+      <th>ID</th>
+      <th>Tên</th>
+      <th>Đơn giá</th>
+      <th>Tình trạng</th>
+      <th>Loại phòng</th>
+      <th>Tầng</th>
+      <th>Hành động</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in phongs %}
+    <tr>
+      <td>{{ p.id }}</td>
+      <td>{{ p.ten }}</td>
+      <td>{{ p.dongia }}</td>
+      <td>{{ p.tinhtrang }}</td>
+      <td>{{ p.loaiphong.ten if p.loaiphong else p.id_loaiphong }}</td>
+      <td>{{ p.tang.ten if p.tang else p.id_tang }}</td>
+      <td>
+        <a class="btn btn-sm btn-primary" href="{{ url_for('admin_ui.phong_edit', phong_id=p.id) }}">Sửa</a>
+        <form method="post" action="{{ url_for('admin_ui.phong_delete', phong_id=p.id) }}" style="display:inline" onsubmit="return confirm('Xác nhận xóa?')">
+          <button class="btn btn-sm btn-danger" type="submit">Xóa</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
