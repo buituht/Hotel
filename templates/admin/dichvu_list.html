@@ -1,0 +1,47 @@
+{% extends 'admin/layout.html' %}
+{% block title %}Quản Lý Dịch Vụ{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-gray-800">Quản Lý Dịch Vụ</h1>
+    <a href="{{ url_for('admin_ui.dichvu_create') }}" class="btn btn-success mb-3">
+        <i class="fas fa-plus"></i> Thêm Dịch Vụ Mới
+    </a>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tên Dịch Vụ</th>
+                            <th>Giá (VND)</th>
+                            <th>Áp Dụng cho Loại Phòng</th>
+                            <th>Áp Dụng cho Phòng</th>
+                            <th>Hành Động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for dv in dichvus %}
+                        <tr>
+                            <td>{{ dv.id }}</td>
+                            <td>{{ dv.ten }}</td>
+                            <td>{{ "{:,.0f}".format(dv.gia) if dv.gia else '0' }} VND</td>
+                            <td>{{ dv.loaiphong.ten if dv.loaiphong else 'Tất cả' }}</td>
+                            <td>{{ dv.phong.ten if dv.phong else 'Tất cả' }}</td>
+                            <td>
+                                <a href="{{ url_for('admin_ui.dichvu_edit', dv_id=dv.id) }}" class="btn btn-sm btn-primary">Sửa</a>
+                                <form action="{{ url_for('admin_ui.dichvu_delete', dv_id=dv.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa dịch vụ {{ dv.ten }}?');">
+                                    <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
