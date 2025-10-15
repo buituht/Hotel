@@ -1,0 +1,47 @@
+{% extends "admin/layout.html" %}
+{% block content %}
+    <h2>
+        {% if action == 'create' %}
+            Tạo Tài khoản mới
+        {% else %}
+            Chỉnh sửa Tài khoản: {{ taikhoan.username }}
+        {% endif %}
+    </h2>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+            {{ form.username.label(class="form-label") }}
+            {{ form.username(class="form-control") }}
+            {% for error in form.username.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            {{ form.id_nhanvien.label(class="form-label") }}
+            {{ form.id_nhanvien(class="form-select") }}
+            {% for error in form.id_nhanvien.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            {{ form.password.label(class="form-label") }}
+            {% if action == 'edit' %}
+                <small class="form-text text-muted">(Để trống nếu không muốn thay đổi mật khẩu)</small>
+            {% endif %}
+            {{ form.password(class="form-control") }}
+            {% for error in form.password.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            {{ form.confirm.label(class="form-label") }}
+            {{ form.confirm(class="form-control") }}
+            {% for error in form.confirm.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+        
+        {{ form.submit(class="btn btn-primary") }}
+        <a href="{{ url_for('admin_ui.taikhoan_list') }}" class="btn btn-secondary">Hủy</a>
+    </form>
+{% endblock %}
