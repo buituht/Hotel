@@ -1,0 +1,49 @@
+{% extends 'admin/layout.html' %}
+{% block title %}Quản Lý Hóa Đơn{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-gray-800">Quản Lý Hóa Đơn</h1>
+    <a href="{{ url_for('admin_ui.hoadon_create') }}" class="btn btn-success mb-3">
+        <i class="fas fa-plus"></i> Tạo Hóa Đơn Mới
+    </a>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Khách Hàng</th>
+                            <th>Nhân Viên</th>
+                            <th>Ngày Thanh Toán</th>
+                            <th>Tổng Tiền</th>
+                            <th>Chi Tiết (Phòng)</th>
+                            <th>Hành Động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for hd in hoadons %}
+                        <tr>
+                            <td>{{ hd.id }}</td>
+                            <td>{{ hd.khachhang.hoten if hd.khachhang else 'N/A' }}</td>
+                            <td>{{ hd.nhanvien.ten if hd.nhanvien else 'N/A' }}</td>
+                            <td>{{ hd.ngaythanhtoan.strftime('%Y-%m-%d') if hd.ngaythanhtoan else 'Chưa TT' }}</td>
+                            <td>{{ "{:,.0f}".format(hd.tongtien) }} VND</td>
+                            <td>{{ hd.hoadoncts | length }}</td>
+                            <td>
+                                <a href="{{ url_for('admin_ui.hoadon_edit', hd_id=hd.id) }}" class="btn btn-sm btn-primary">Xem/Sửa</a>
+                                <form action="{{ url_for('admin_ui.hoadon_delete', hd_id=hd.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa hóa đơn {{ hd.id }}?');">
+                                    <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
