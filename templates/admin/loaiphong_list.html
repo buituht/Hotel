@@ -1,0 +1,43 @@
+{% extends 'admin/layout.html' %}
+{% block title %}Quản Lý Loại Phòng{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-gray-800">Quản Lý Loại Phòng</h1>
+    <a href="{{ url_for('admin_ui.loaiphong_create') }}" class="btn btn-success mb-3">
+        <i class="fas fa-plus"></i> Thêm Loại Phòng Mới
+    </a>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tên Loại Phòng</th>
+                            <th>Số Lượng Phòng</th>
+                            <th>Hành Động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for lp in loaiphongs %}
+                        <tr>
+                            <td>{{ lp.id }}</td>
+                            <td>{{ lp.ten }}</td>
+                            <td>{{ lp.phongs | length }}</td>
+                            <td>
+                                <a href="{{ url_for('admin_ui.loaiphong_edit', lp_id=lp.id) }}" class="btn btn-sm btn-primary">Sửa</a>
+                                <form action="{{ url_for('admin_ui.loaiphong_delete', lp_id=lp.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa loại phòng {{ lp.ten }}?');">
+                                    <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
