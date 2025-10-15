@@ -1,0 +1,43 @@
+{% extends 'admin/layout.html' %}
+{% block title %}Quản Lý Tầng{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-gray-800">Quản Lý Tầng</h1>
+    <a href="{{ url_for('admin_ui.tang_create') }}" class="btn btn-success mb-3">
+        <i class="fas fa-plus"></i> Thêm Tầng Mới
+    </a>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tên Tầng</th>
+                            <th>Số Lượng Phòng</th>
+                            <th>Hành Động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for t in tangs %}
+                        <tr>
+                            <td>{{ t.id }}</td>
+                            <td>{{ t.ten }}</td>
+                            <td>{{ t.phongs | length }}</td>
+                            <td>
+                                <a href="{{ url_for('admin_ui.tang_edit', t_id=t.id) }}" class="btn btn-sm btn-primary">Sửa</a>
+                                <form action="{{ url_for('admin_ui.tang_delete', t_id=t.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tầng {{ t.ten }}?');">
+                                    <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
