@@ -1,0 +1,22 @@
+{
+  "rooms": {
+    "101": {
+      "type": "single",
+      "price": 200,
+      "status": "free",
+      "guest": ""
+    },
+    "102": {
+      "type": "double",
+      "price": 350,
+      "status": "free",
+      "guest": ""
+    },
+    "201": {
+      "type": "suite",
+      "price": 800,
+      "status": "free",
+      "guest": ""
+    }
+  }
+}
