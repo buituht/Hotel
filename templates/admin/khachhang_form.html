@@ -1,0 +1,79 @@
+{% extends 'admin/layout.html' %}
+{% block title %}
+    {% if action == 'create' %}Tạo Khách Hàng Mới{% else %}Chỉnh Sửa Khách Hàng{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-gray-800">
+        {% if action == 'create' %}Tạo Hồ Sơ Khách Hàng Mới{% else %}Chỉnh Sửa Hồ Sơ: {{ khachhang.hoten }}{% endif %}
+    </h1>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <form method="POST" class="user">
+                {{ form.hidden_tag() }}
+
+                <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        {{ form.hoten.label(class="form-label") }}
+                        {{ form.hoten(class="form-control") }}
+                        {% for error in form.hoten.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    <div class="col-sm-6">
+                        {{ form.cccd.label(class="form-label") }}
+                        {{ form.cccd(class="form-control") }}
+                        {% for error in form.cccd.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-4 mb-3 mb-sm-0">
+                        {{ form.gioitinh.label(class="form-label") }}
+                        {{ form.gioitinh(class="form-control") }}
+                    </div>
+                    <div class="col-sm-4">
+                        {{ form.ngaysinh.label(class="form-label") }}
+                        {{ form.ngaysinh(class="form-control", type="date") }}
+                        {% for error in form.ngaysinh.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    <div class="col-sm-4">
+                        {{ form.ngaythue.label(class="form-label") }}
+                        {{ form.ngaythue(class="form-control", type="date") }}
+                        {% for error in form.ngaythue.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        {{ form.sdt.label(class="form-label") }}
+                        {{ form.sdt(class="form-control") }}
+                        {% for error in form.sdt.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    <div class="col-sm-6">
+                        {{ form.diachi.label(class="form-label") }}
+                        {{ form.diachi(class="form-control") }}
+                        {% for error in form.diachi.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <hr>
+                {{ form.submit(class="btn btn-primary btn-block") }}
+                <a href="{{ url_for('admin_ui.khachhang_list') }}" class="btn btn-secondary btn-block">Hủy bỏ</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
