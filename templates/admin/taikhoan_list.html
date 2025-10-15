@@ -1,0 +1,40 @@
+{% extends "admin/layout.html" %}
+{% block content %}
+    <h2>Danh sách Tài khoản</h2>
+    <a href="{{ url_for('admin_ui.taikhoan_create') }}" class="btn btn-success">
+        <i class="fas fa-plus"></i>Tạo Tài khoản mới</a>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên đăng nhập</th>
+                <th>Nhân viên</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tk in taikhoans %}
+            <tr>
+                <td>{{ tk.id }}</td>
+                <td>{{ tk.username }}</td>
+                <td>{{ tk.nhanvien.ten }}</td>
+                <td>
+                    <a href="{{ url_for('admin_ui.taikhoan_edit', taikhoan_id=tk.id) }}" class="btn btn-sm btn-warning">Sửa</a>
+                    <form method="POST" action="{{ url_for('admin_ui.taikhoan_delete', taikhoan_id=tk.id) }}" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa tài khoản {{ tk.username }} không?');">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
