@@ -1,0 +1,59 @@
+{% extends 'admin/layout.html' %}
+{% block title %}Quản Lý Nhân Viên{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-gray-800">Quản Lý Nhân Viên</h1>
+    <a href="{{ url_for('admin_ui.nhanvien_create') }}" class="btn btn-success mb-3">
+        <i class="fas fa-plus"></i> Thêm Nhân Viên Mới
+    </a>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tên Nhân Viên</th>
+                            <th>Chức Vụ</th>
+                            <th>Giới Tính</th>
+                            <th>Ngày Sinh</th>
+                            <th>SĐT</th>
+                            <th>Lương</th>
+                            <th>Tài Khoản</th>
+                            <th>Hành Động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for nv in nhanviens %}
+                        <tr>
+                            <td>{{ nv.id }}</td>
+                            <td>{{ nv.ten }}</td>
+                            <td>{{ nv.chucvu }}</td>
+                            <td>{{ nv.gioitinh }}</td>
+                            <td>{{ nv.ngaysinh | default('N/A') }}</td>
+                            <td>{{ nv.sdt | default('N/A') }}</td>
+                            <td>{{ "{:,.0f}".format(nv.luong) if nv.luong else '0' }} VND</td>
+                            <td>
+                                {% if nv.taikhoan %}
+                                    <span class="badge badge-success">Đã tạo</span>
+                                {% else %}
+                                    <span class="badge badge-warning">Chưa có</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ url_for('admin_ui.nhanvien_edit', nv_id=nv.id) }}" class="btn btn-sm btn-primary">Sửa</a>
+                                <form action="{{ url_for('admin_ui.nhanvien_delete', nv_id=nv.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa nhân viên {{ nv.ten }}?');">
+                                    <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
