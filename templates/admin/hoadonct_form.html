@@ -1,0 +1,71 @@
+{% extends 'admin/layout.html' %}
+{% block title %}
+    {% if action == 'create' %}Thêm Chi Tiết Đặt Phòng{% else %}Chỉnh Sửa Chi Tiết{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-gray-800">
+        {% if action == 'create' %}Thêm Chi Tiết Đặt Phòng cho HĐ #{{ hoadon.id }}{% else %}Sửa Chi Tiết HĐ #{{ hoadonct.id_hoadon }}{% endif %}
+    </h1>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <form method="POST" class="user">
+                {{ form.hidden_tag() }}
+
+                <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        {{ form.id_phong.label(class="form-label") }}
+                        {{ form.id_phong(class="form-control") }}
+                    </div>
+                    <div class="col-sm-6">
+                        {{ form.tenphong.label(class="form-label") }}
+                        {{ form.tenphong(class="form-control") }}
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        {{ form.tenkhachhang.label(class="form-label") }}
+                        {{ form.tenkhachhang(class="form-control") }}
+                    </div>
+                    <div class="col-sm-6">
+                        {{ form.nhanvienlap.label(class="form-label") }}
+                        {{ form.nhanvienlap(class="form-control") }}
+                    </div>
+                </div>
+                
+                <hr>
+                <h6 class="text-primary">Thời Gian Check-In</h6>
+                <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        {{ form.ngay_checkin.label(class="form-label") }}
+                        {{ form.ngay_checkin(class="form-control", type="date") }}
+                    </div>
+                    <div class="col-sm-6">
+                        {{ form.gio_checkin.label(class="form-label") }}
+                        {{ form.gio_checkin(class="form-control", placeholder="HH:MM (Ví dụ: 14:30)") }}
+                    </div>
+                </div>
+
+                <h6 class="text-primary mt-3">Thời Gian Check-Out</h6>
+                <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        {{ form.ngay_checkout.label(class="form-label") }}
+                        {{ form.ngay_checkout(class="form-control", type="date") }}
+                    </div>
+                    <div class="col-sm-6">
+                        {{ form.gioc_checkout.label(class="form-label") }}
+                        {{ form.gioc_checkout(class="form-control", placeholder="HH:MM (Để trống nếu chưa Check-Out)") }}
+                    </div>
+                </div>
+                
+                <hr>
+                {{ form.submit(class="btn btn-primary btn-block") }}
+                <a href="{{ url_for('admin_ui.hoadon_edit', hd_id=hoadon.id if action == 'create' else hoadonct.id_hoadon) }}" class="btn btn-secondary btn-block">Hủy bỏ</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
