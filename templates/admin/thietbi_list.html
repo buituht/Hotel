@@ -1,0 +1,49 @@
+{% extends 'admin/layout.html' %}
+{% block title %}Quản Lý Thiết Bị{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-gray-800">Quản Lý Thiết Bị</h1>
+    <a href="{{ url_for('admin_ui.thietbi_create') }}" class="btn btn-success mb-3">
+        <i class="fas fa-plus"></i> Thêm Thiết Bị Mới
+    </a>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tên Thiết Bị</th>
+                            <th>Giá (VND)</th>
+                            <th>Trạng Thái</th>
+                            <th>Loại Phòng</th>
+                            <th>Phòng Cụ Thể</th>
+                            <th>Hành Động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for tb in thietbis %}
+                        <tr>
+                            <td>{{ tb.id }}</td>
+                            <td>{{ tb.ten }}</td>
+                            <td>{{ "{:,.0f}".format(tb.gia) if tb.gia else '0' }} VND</td>
+                            <td>{{ tb.trangthai | default('N/A') }}</td>
+                            <td>{{ tb.loaiphong.ten if tb.loaiphong else 'Tất cả' }}</td>
+                            <td>{{ tb.phong.ten if tb.phong else 'Tất cả' }}</td>
+                            <td>
+                                <a href="{{ url_for('admin_ui.thietbi_edit', tb_id=tb.id) }}" class="btn btn-sm btn-primary">Sửa</a>
+                                <form action="{{ url_for('admin_ui.thietbi_delete', tb_id=tb.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa thiết bị {{ tb.ten }}?');">
+                                    <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
