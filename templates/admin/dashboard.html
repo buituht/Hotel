@@ -1,0 +1,23 @@
+{% extends "admin/layout.html" %}
+{% block content %}
+<h1>Dashboard</h1>
+<div class="row">
+  <div class="col-md-4">
+    <div class="card text-white bg-primary mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Phòng</h5>
+        <p class="card-text">{{ total_phong }}</p>
+        <a href="{{ url_for('admin_ui.phong_list') }}" class="btn btn-light btn-sm">Quản lý</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-white bg-success mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Loại phòng</h5>
+        <p class="card-text">{{ total_loaiphong }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
