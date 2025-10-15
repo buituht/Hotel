@@ -1,0 +1,56 @@
+{% extends 'admin/layout.html' %}
+{% block title %}
+    {% if action == 'create' %}Tạo Dịch Vụ Mới{% else %}Chỉnh Sửa Dịch Vụ{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-gray-800">
+        {% if action == 'create' %}Tạo Dịch Vụ Mới{% else %}Chỉnh Sửa Dịch Vụ: {{ dichvu.ten }}{% endif %}
+    </h1>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <form method="POST" class="user">
+                {{ form.hidden_tag() }}
+
+                <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        {{ form.ten.label(class="form-label") }}
+                        {{ form.ten(class="form-control") }}
+                        {% for error in form.ten.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    <div class="col-sm-6">
+                        {{ form.gia.label(class="form-label") }}
+                        {{ form.gia(class="form-control") }}
+                        {% for error in form.gia.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        {{ form.id_loaiphong.label(class="form-label") }}
+                        {{ form.id_loaiphong(class="form-control") }}
+                    </div>
+                    <div class="col-sm-6">
+                        {{ form.id_phong.label(class="form-label") }}
+                        {{ form.id_phong(class="form-control") }}
+                    </div>
+                </div>
+                
+                <hr>
+                <p class="text-info small">* Nếu chọn cả Loại Phòng và Phòng cụ thể, dịch vụ sẽ ưu tiên áp dụng cho Phòng cụ thể.</p>
+                <p class="text-info small">* Chọn "--- Không áp dụng ---" để áp dụng cho tất cả.</p>
+                <hr>
+                
+                {{ form.submit(class="btn btn-primary btn-block") }}
+                <a href="{{ url_for('admin_ui.dichvu_list') }}" class="btn btn-secondary btn-block">Hủy bỏ</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
