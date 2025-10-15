@@ -1,0 +1,95 @@
+{% extends 'admin/layout.html' %}
+{% block title %}
+    {% if action == 'create' %}Tạo Hóa Đơn Mới{% else %}Sửa Hóa Đơn #{{ hoadon.id }}{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-gray-800">
+        {% if action == 'create' %}Tạo Hóa Đơn Mới{% else %}Sửa Hóa Đơn #{{ hoadon.id }}{% endif %}
+    </h1>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary">Thông Tin Chung</h6></div>
+        <div class="card-body">
+            <form method="POST" class="user">
+                {{ form.hidden_tag() }}
+
+                <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        {{ form.id_khachhang.label(class="form-label") }}
+                        {{ form.id_khachhang(class="form-control") }}
+                    </div>
+                    <div class="col-sm-6">
+                        {{ form.id_nhanvien.label(class="form-label") }}
+                        {{ form.id_nhanvien(class="form-control") }}
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-4 mb-3 mb-sm-0">
+                        {{ form.soluong.label(class="form-label") }}
+                        {{ form.soluong(class="form-control") }}
+                    </div>
+                    <div class="col-sm-4">
+                        {{ form.tongtien.label(class="form-label") }}
+                        {{ form.tongtien(class="form-control") }}
+                    </div>
+                    <div class="col-sm-4">
+                        {{ form.ngaythanhtoan.label(class="form-label") }}
+                        {{ form.ngaythanhtoan(class="form-control", type="date") }}
+                    </div>
+                </div>
+                
+                <hr>
+                {{ form.submit(class="btn btn-primary btn-block") }}
+                <a href="{{ url_for('admin_ui.hoadon_list') }}" class="btn btn-secondary btn-block">Quay Lại Danh Sách</a>
+            </form>
+        </div>
+    </div>
+
+    {% if action == 'edit' %}
+        <div class="card shadow mb-4 mt-5">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">Chi Tiết Đặt Phòng ({{ hoadon.hoadoncts | length }} mục)</h6>
+                <a href="{{ url_for('admin_ui.hoadonct_create', hd_id=hoadon.id) }}" class="btn btn-sm btn-info">
+                    <i class="fas fa-plus"></i> Thêm Chi Tiết
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Phòng</th>
+                                <th>Tên Khách Hàng</th>
+                                <th>Check-In</th>
+                                <th>Check-Out</th>
+                                <th>Hành Động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for ct in hoadon.hoadoncts %}
+                            <tr>
+                                <td>{{ ct.phong.ten if ct.phong else ct.tenphong }}</td>
+                                <td>{{ ct.tenkhachhang | default('N/A') }}</td>
+                                <td>{{ ct.ngay_checkin.strftime('%Y-%m-%d %H:%M') if ct.ngay_checkin else 'N/A' }}</td>
+                                <td>{{ ct.ngay_checkout.strftime('%Y-%m-%d %H:%M') if ct.ngay_checkout else 'Chưa Check-Out' }}</td>
+                                <td>
+                                    <a href="{{ url_for('admin_ui.hoadonct_edit', ct_id=ct.id) }}" class="btn btn-sm btn-primary">Sửa</a>
+                                    <form action="{{ url_for('admin_ui.hoadonct_delete', ct_id=ct.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Xóa Chi Tiết này?');">
+                                        <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr><td colspan="5">Chưa có chi tiết đặt phòng nào.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
