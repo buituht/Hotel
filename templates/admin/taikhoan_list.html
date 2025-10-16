@@ -1,40 +1,74 @@
 {% extends "admin/layout.html" %}
-{% block content %}
-    <h2>Danh sách Tài khoản</h2>
-    <a href="{{ url_for('admin_ui.taikhoan_create') }}" class="btn btn-success">
-        <i class="fas fa-plus"></i>Tạo Tài khoản mới</a>
+{% block title %}Danh sách Tài khoản{% endblock %}
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert alert-{{ category }}">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-    
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Tên đăng nhập</th>
-                <th>Nhân viên</th>
-                <th>Thao tác</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for tk in taikhoans %}
-            <tr>
-                <td>{{ tk.id }}</td>
-                <td>{{ tk.username }}</td>
-                <td>{{ tk.nhanvien.ten }}</td>
-                <td>
-                    <a href="{{ url_for('admin_ui.taikhoan_edit', taikhoan_id=tk.id) }}" class="btn btn-sm btn-warning">Sửa</a>
-                    <form method="POST" action="{{ url_for('admin_ui.taikhoan_delete', taikhoan_id=tk.id) }}" style="display:inline;">
-                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa tài khoản {{ tk.username }} không?');">Xóa</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+{% block content %}
+<div class="container-fluid">
+
+    {# Tiêu đề trang #}
+    <h1 class="h3 mb-2 text-gray-800">Quản lý Tài khoản</h1>
+
+    <div class="row">
+        <div class="col-lg-12">
+
+            {# Card chứa nút Tạo mới và Flash Messages #}
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Danh sách Tài khoản</h6>
+                    <a href="{{ url_for('admin_ui.taikhoan_create') }}" class="btn btn-success btn-icon-split">
+                        <span class="icon text-white-50"><i class="fas fa-plus"></i></span>
+                        <span class="text">Tạo Tài khoản mới</span>
+                    </a>
+                </div>
+                
+                <div class="card-body">
+                    {# Hiển thị Flash Messages #}
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    {# Bảng dữ liệu #}
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tên đăng nhập</th>
+                                    <th>Nhân viên</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for tk in taikhoans %}
+                                <tr>
+                                    <td>{{ tk.id }}</td>
+                                    <td>{{ tk.username }}</td>
+                                    <td>
+                                        {# Đảm bảo 'nhanvien' là backref đúng từ models.py #}
+                                        {{ tk.nhanvien.ten if tk.nhanvien else 'Không có' }}
+                                    </td>
+                                    <td class="text-nowrap">
+                                        <a href="{{ url_for('admin_ui.taikhoan_edit', taikhoan_id=tk.id) }}" class="btn btn-sm btn-warning">
+                                            <i class="fas fa-edit"></i> Sửa
+                                        </a>
+                                        <form method="POST" action="{{ url_for('admin_ui.taikhoan_delete', taikhoan_id=tk.id) }}" style="display:inline;">
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa tài khoản {{ tk.username }} không?');">
+                                                <i class="fas fa-trash"></i> Xóa
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
 {% endblock %}
