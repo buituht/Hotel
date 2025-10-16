@@ -9,12 +9,18 @@ from sqlalchemy import select
 
 from wtforms import DateField # Cần cho trường NgaySinh
 from wtforms.validators import Regexp 
-from models import KhachHang # Cần cho KhachHangForm nếu bạn mở rộng
+from models import KhachHang # Cần cho KhachHangForm 
 
 from models import db, Phong, LoaiPhong, Tang
 from models import db, Phong, LoaiPhong, Tang, TaiKhoan, NhanVien 
-
 admin_bp = Blueprint('admin_ui', __name__, template_folder='templates', url_prefix='/admin-ui')
+
+from chartdashboard import create_floor_chart 
+
+
+
+
+
 
 def admin_required(fn):
     @wraps(fn)
@@ -51,8 +57,9 @@ def dashboard():
     total_phong = Phong.query.count()
     total_loaiphong = LoaiPhong.query.count()
     total_tang = Tang.query.count()
+    chart_data = create_floor_chart() 
     return render_template('admin/dashboard.html', total_phong=total_phong,
-                           total_loaiphong=total_loaiphong, total_tang=total_tang)
+                           total_loaiphong=total_loaiphong, total_tang=total_tang,chart_data=chart_data)
 
 @admin_bp.route('/phong')
 @login_required
