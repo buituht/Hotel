@@ -7,9 +7,9 @@ from functools import wraps
 
 from sqlalchemy import select
 
-from wtforms import DateField # Cần cho trường NgaySinh
+from wtforms import DateField #thu vien ngay thang
 from wtforms.validators import Regexp 
-from models import KhachHang # Cần cho KhachHangForm 
+from models import KhachHang # Form KhachHangForm 
 
 from models import db, Phong, LoaiPhong, Tang
 from models import db, Phong, LoaiPhong, Tang, TaiKhoan, NhanVien 
