@@ -12,6 +12,6 @@ class RegisterForm(FlaskForm):
     username = StringField('Tên đăng nhập', validators=[DataRequired(), Length(min=3, max=100)])
     password = PasswordField('Mật khẩu', validators=[DataRequired(), Length(min=4)])
     confirm = PasswordField('Nhập lại mật khẩu', validators=[DataRequired(), EqualTo('password', message='Mật khẩu không khớp')])
-    employee_name = StringField('Tên nhân viên (liên kết tài khoản)', validators=[DataRequired(), Length(min=1, max=255)])
+    employee_name = StringField('Tên nhân viên', validators=[DataRequired(), Length(min=1, max=255)])
     employee_role = StringField('Chức vụ nhân viên (ví dụ: Manager, Receptionist)', default='Receptionist')
     submit = SubmitField('Đăng ký')
